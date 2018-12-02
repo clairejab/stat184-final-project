@@ -33,9 +33,26 @@ TidyThanksgivingData %>%
 ```
 
 
-
+Grouping by sex shows that there were 544 women who completed the survey and 481 males that completed the survey. The 33 number that has no category shows people who may have fogotten to fill out gender or those who did not feel the need to share their gender.
 ```{r}
 TidyThanksgivingData %>%
-  group_by(CelebrateThanksgiving)
+  group_by(Sex) %>%
+  summarise(total = n())
 
+```
+
+A data table called "Celebrate" was created showing the split between females and males and their age group ranges who celebrate Thanksgiving. It is interesting to see that females 60+ celebrate Thanksgiving the most with a total of 144 people celebrating. Males aged 45-59 celebrate Thanksgiving the most with 127 people celebrating. 
+```{r}
+Celebrate <-
+  TidyThanksgivingData %>%
+  filter(CelebrateThanksgiving =="Yes") %>%
+  group_by(Sex,Age) %>%
+  summarise(total = n())
+  
+Celebrate %>%
+  ggplot(aes(x= Age, y=total)) +
+  geom_point(aes(color = Sex))
+```
+
+```{r}
 ```

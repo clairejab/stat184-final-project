@@ -3,10 +3,39 @@ title: "Stat184 Final Project "
 output: html_notebook
 ---
 ```{r} 
-library()
+library(DataComputing)
+library(tidyr)
+library(mosaicData)
+library(rvest)
+library(dbplyr)
 ```
 
 ```{r}
 myURL <- "/Users/clairejablonski/Downloads/data-master/thanksgiving-2015/thanksgiving-2015-poll-data.csv"
 ThanksgivingData <- read.csv(myURL)
+```
+
+Renaming Variables so it is easier to understand data table.Preview of new data table called TidyThanksgiving Data which has updated headings.
+```{r}
+TidyThanksgivingData <-
+  ThanksgivingData %>%
+  rename(Respondent = RespondentID, CelebrateThanksgiving = Do.you.celebrate.Thanksgiving., MainDish = What.is.typically.the.main.dish.at.your.Thanksgiving.dinner., MainDishCooked = How.is.the.main.dish.typically.cooked., TypeofStuffing = What.kind.of.stuffing.dressing.do.you.typically.have., TypeofCranberrySauce = What.type.of.cranberry.saucedo.you.typically.have., Gravy = Do.you.typically.have.gravy., PrayatMeal = Do.you.typically.pray.before.or.after.the.Thanksgiving.meal., TravelDistance = How.far.will.you.travel.for.Thanksgiving., WatchMacysParade = Will.you.watch.any.of.the.following.programs.on.Thanksgiving..Please.select.all.that.apply....Macy.s.Parade, KidsTableAgeCutoff = What.s.the.age.cutoff.at.your..kids..table..at.Thanksgiving., Sex = What.is.your.gender., HouseholdCombinedSalary = How.much.total.combined.money.did.all.members.of.your.HOUSEHOLD.earn.last.year. )
+
+head(TidyThanksgivingData)
+```
+
+
+Filtering out "CelebrateThanksgiving" tells us that out of the 1058 cases (also known as saying out of the 1058 people that completed this survey) 980 of the people celebrated Thanksgiving in 2015.
+```{r}
+TidyThanksgivingData %>%
+  filter(CelebrateThanksgiving == "Yes") %>%
+  summarise(total = n())
+```
+
+
+
+```{r}
+TidyThanksgivingData %>%
+  group_by(CelebrateThanksgiving)
+
 ```

@@ -104,6 +104,17 @@ USRegionMainDish %>%
   geom_point( aes(shape = MainDishCooked)) +
   facet_wrap( ~ US.Region)
 
-
 ```
+From this graph it is now obvious that in each region that turkey is more served than anyother dish. What we cannot really tell from this graph is the way that most people cook their main dish it really varies from region to region and there is no distinct pattern seen from it. Other factors may have an influenece like age, sex, or income. Let us explore what age has to do with the style in how people cook their turkey. 
+
+
+```{r}
+TidyThanksgivingData %>%
+  group_by(Age, MainDishCooked) %>%
+  summarise(total = n()) %>%
+  filter(MainDishCooked !="", MainDishCooked != "Other (please specify)", MainDishCooked != "I don't know", Age != "") %>%
+  arrange( desc(total) )
+```
+This shows that Baked and Roasted are the most popular cooking type for the main dish. It is important to notice that the older range of people are the most popular in these types more than younger people because from what we saw before in the data it makes sense because there are more older people that complete this survey that celebrate thanksgiving compred to younger generations of people.
+
 

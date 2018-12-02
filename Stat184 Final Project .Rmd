@@ -2,6 +2,11 @@
 title: "Stat184 Final Project "
 output: html_notebook
 ---
+```{r} 
+library()
+```
 
- > file.choose()
-[1] "/Users/clairejablonski/Downloads/data-master/thanksgiving-2015/thanksgiving-2015-poll-data.csv"
+```{r}
+myURL <- "/Users/clairejablonski/Downloads/data-master/thanksgiving-2015/thanksgiving-2015-poll-data.csv"
+ThanksgivingData <- read.csv(myURL)
+```

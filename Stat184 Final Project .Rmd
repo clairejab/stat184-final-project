@@ -1,0 +1,7 @@
+---
+title: "Stat184 Final Project "
+output: html_notebook
+---
+
+ > file.choose()
+[1] "/Users/clairejablonski/Downloads/data-master/thanksgiving-2015/thanksgiving-2015-poll-data.csv"

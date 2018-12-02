@@ -83,3 +83,27 @@ RetailSalary %>%
 ```
 
 
+From this data table called "USRegionMainDish" we are looking at what different regions people live in, what is the main dish they eat for Thanksgiving and how is this main dish cooked. From the table we can see that the most amount of people live in the South Atlantic and bake turkey.
+```{r}
+USRegionMainDish <-
+  TidyThanksgivingData %>%
+  group_by(US.Region, MainDish, MainDishCooked) %>%
+  filter(US.Region != "")%>%
+  filter(MainDish !="Other (please specify)") %>%
+  filter(MainDish != "") %>%
+  filter(MainDish != "I don't know") %>%
+  filter(MainDishCooked !="Other (please specify)") %>%
+  filter(MainDishCooked != "I don't know") %>%
+  summarise(total = n())
+
+USRegionMainDish %>%
+  arrange( desc(total))
+
+USRegionMainDish %>%
+  ggplot(aes(x = MainDish , y = total )) +
+  geom_point( aes(shape = MainDishCooked)) +
+  facet_wrap( ~ US.Region)
+
+
+```
+

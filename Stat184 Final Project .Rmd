@@ -81,3 +81,5 @@ RetailSalary %>%
   ggplot(aes(x = HouseholdCombinedSalary, y = total)) +
   geom_point(aes( color = Do.you.work.in.retail.))
 ```
+
+

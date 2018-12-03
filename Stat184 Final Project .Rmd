@@ -88,7 +88,7 @@ From this data table called "USRegionMainDish" we are looking at what different 
 USRegionMainDish <-
   TidyThanksgivingData %>%
   group_by(US.Region, MainDish, MainDishCooked) %>%
-  filter(US.Region != "")%>%
+  filter(US.Region != "") %>%
   filter(MainDish !="Other (please specify)") %>%
   filter(MainDish != "") %>%
   filter(MainDish != "I don't know") %>%

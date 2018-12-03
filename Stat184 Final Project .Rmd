@@ -118,3 +118,4 @@ TidyThanksgivingData %>%
 This shows that Baked and Roasted are the most popular cooking type for the main dish. It is important to notice that the older range of people are the most popular in these types more than younger people because from what we saw before in the data it makes sense because there are more older people that complete this survey that celebrate thanksgiving compred to younger generations of people.
 
 
+

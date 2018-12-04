@@ -58,10 +58,6 @@ Celebrate %>%
   geom_point(aes(color = Sex))
 ```
 
-```{r} 
-Celebrate %>%
-  CelebrateMatrix <- matrix(c(102,127,142,144,83,108,127,114), nrow =8)
-```
 
 Grouping by where people live and if they celebrate Thanksgiving helps to show us that most people that celebrate Thanksgiving live in the Suburbs. This number is double Rural and Urban numbers.
 ```{r}
@@ -201,4 +197,32 @@ PrayBeforeMeal/tot
 
 ```{r}
 prop.test(PrayBeforeMeal, correct = F)
+```
+
+
+```{r}
+KidsTableCutoff <-
+  TidyThanksgivingData %>%
+  mutate( KidsTableAgeCutoff=gsub("or|younger|older","", KidsTableAgeCutoff)) %>%
+  mutate( Age=gsub("[-, 29, 44, +]","", Age))
+```
+
+```{r}
+KidsTableCutoff %>%
+  filter(KidsTableAgeCutoff != "") %>%
+  filter(Age != "") %>%
+  filter(LivingArea != "") %>%
+  ggplot(aes(x= Age, y = KidsTableAgeCutoff)) +
+  geom_jitter() +
+  facet_wrap( ~LivingArea)
+  
+```
+
+```{r}
+KidsTableCutoff %>%
+  group_by(Age) %>%
+  filter(Age != "") %>%
+  summarise(Total = n())
+  ggplot(aes(x= Age, y = Total)) +
+  geom_bar()
 ```

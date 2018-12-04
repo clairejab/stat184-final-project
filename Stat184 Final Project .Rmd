@@ -180,3 +180,25 @@ PrayBeforeMeal %>%
   ggplot(aes( x = PrayatMeal, y= total)) +
   geom_point(aes(shape = Sex))
 ```
+
+```{r}
+PrayBeforeMeal <- matrix(c(174,152,341,280) ,nrow=2,byrow=TRUE)
+PrayBeforeMeal
+```
+
+```{r}
+dimnames(PrayBeforeMeal) <- list(c("No","Yes"),c("Female","Male"))
+names(dimnames(PrayBeforeMeal)) <- c("Pray","Gender")
+PrayBeforeMeal
+```
+
+```{r}
+tot <- sum(PrayBeforeMeal)
+tot
+
+PrayBeforeMeal/tot
+```
+
+```{r}
+prop.test(PrayBeforeMeal, correct = F)
+```

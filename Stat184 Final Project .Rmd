@@ -8,6 +8,7 @@ library(tidyr)
 library(mosaicData)
 library(rvest)
 library(dbplyr)
+library(dplyr)
 ```
 
 ```{r}
@@ -57,6 +58,10 @@ Celebrate %>%
   geom_point(aes(color = Sex))
 ```
 
+```{r} 
+Celebrate %>%
+  CelebrateMatrix <- matrix(c(102,127,142,144,83,108,127,114), nrow =8)
+```
 
 Grouping by where people live and if they celebrate Thanksgiving helps to show us that most people that celebrate Thanksgiving live in the Suburbs. This number is double Rural and Urban numbers.
 ```{r}
@@ -73,7 +78,7 @@ RetailSalary <-
   TidyThanksgivingData %>%
   group_by(Do.you.work.in.retail.,HouseholdCombinedSalary ) %>%
   filter(Do.you.work.in.retail. != "") %>%
-  filter(HouseholdCombinedSalary != "") %>%
+  filter(HouseholdCombinedSalary != "", HouseholdCombinedSalary != "Prefer not to answer") %>%
   summarise(total = n())
 
 
@@ -107,6 +112,14 @@ USRegionMainDish %>%
 ```
 From this graph it is now obvious that in each region that turkey is more served than anyother dish. What we cannot really tell from this graph is the way that most people cook their main dish it really varies from region to region and there is no distinct pattern seen from it. Other factors may have an influenece like age, sex, or income. Let us explore what age has to do with the style in how people cook their turkey. 
 
+```{r}
+USRegionMainDish %>%
+  filter(MainDish == "Turkey" ) %>%
+  ggplot(aes(x = MainDishCooked , y = total )) +
+  geom_point(aes(color = US.Region))
+  
+```
+
 
 ```{r}
 TidyThanksgivingData %>%
@@ -134,7 +147,7 @@ HouseholdSalary %>%
 ```
 
 ```{r}
-HouseholdSalary%>%
+HouseholdSalary %>%
   group_by(Age, Will.you.shop.any.Black.Friday.sales.on.Thanksgiving.Day., LivingArea) %>%
   filter(Age != "", Will.you.shop.any.Black.Friday.sales.on.Thanksgiving.Day. != "", LivingArea != "") %>%
   summarise(total = n()) %>%
@@ -142,3 +155,28 @@ arrange( desc(total) )
 
 ```
 
+```{r}
+MainDishServed <-
+  TidyThanksgivingData %>%
+  BP_narrow %>%
+  mutate(change= MainDish - What.is.typically.the.main.dish.at.your.Thanksgiving.dinner....Other..please.specify.)
+  
+```
+
+```{r}
+PrayBeforeMeal <-
+TidyThanksgivingData %>%
+  group_by(PrayatMeal, Sex) %>%
+  filter(PrayatMeal != "") %>%
+  filter(Sex != "") %>%
+  summarise(total = n())
+
+PrayBeforeMeal %>%
+  arrange( desc(total))
+```
+
+```{r}
+PrayBeforeMeal %>%
+  ggplot(aes( x = PrayatMeal, y= total)) +
+  geom_point(aes(shape = Sex))
+```

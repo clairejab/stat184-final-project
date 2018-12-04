@@ -130,7 +130,15 @@ HouseholdSalary <-
 ```{r}
 HouseholdSalary %>%
   filter(Age != "") %>%
-  summarise(Age = mean(n(), na.rm=TRUE)
+  mean(Age, na.TRUE)
 ```
 
+```{r}
+HouseholdSalary%>%
+  group_by(Age, Will.you.shop.any.Black.Friday.sales.on.Thanksgiving.Day., LivingArea) %>%
+  filter(Age != "", Will.you.shop.any.Black.Friday.sales.on.Thanksgiving.Day. != "", LivingArea != "") %>%
+  summarise(total = n()) %>%
+arrange( desc(total) )
+
+```
 

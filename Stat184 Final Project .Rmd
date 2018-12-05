@@ -135,7 +135,10 @@ HouseholdSalary <-
   TidyThanksgivingData %>%
   mutate( HouseholdCombinedSalary=gsub("[$,%]|to|and up","",HouseholdCombinedSalary)) %>%
   mutate( Age=gsub("[-, 29, 44, +]","", Age)) %>%
-  mutate(Salary=if_else(condition = (HouseholdCombinedSalary == "Prefer not answer"), true = as.character(NA), false = str_extract(string = HouseholdCombinedSalary, pattern = "^[[:digit:]]+" )))
+  mutate(Age = as.numeric(Age)) %>%
+  mutate(Salary=if_else(condition = (HouseholdCombinedSalary == "Prefer not answer"), true = as.character(NA), false = str_extract(string = HouseholdCombinedSalary, pattern = "^[[:digit:]]+" ))) %>%
+  mutate(Salary = as.numeric(Salary))
+
 
 ```
 

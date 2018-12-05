@@ -220,9 +220,10 @@ KidsTableCutoff %>%
   filter(Age != "") %>%
   filter(LivingArea != "") %>%
   ggplot(aes(x= Age, y = KidsTableAgeCutoff)) +
-  geom_jitter() +
+  geom_jitter(width = 0.3, height = 0.3) +
   facet_wrap( ~LivingArea)
   
+
 ```
 
 ```{r}

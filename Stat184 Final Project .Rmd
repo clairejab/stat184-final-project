@@ -9,6 +9,7 @@ library(mosaicData)
 library(rvest)
 library(dbplyr)
 library(dplyr)
+library(tidyverse)
 ```
 
 ```{r}
@@ -133,10 +134,12 @@ This shows that Baked and Roasted are the most popular cooking type for the main
 HouseholdSalary <-
   TidyThanksgivingData %>%
   mutate( HouseholdCombinedSalary=gsub("[$,%]|to|and up","",HouseholdCombinedSalary)) %>%
-  mutate( Age=gsub("[-, 29, 44, +]","", Age))
+  mutate( Age=gsub("[-, 29, 44, +]","", Age)) %>%
+  mutate(Salary=if_else(condition = (HouseholdCombinedSalary == "Prefer not answer"), true = as.character(NA), false = str_extract(string = HouseholdCombinedSalary, pattern = "^[[:digit:]]+" )))
 
-  
 ```
+
+
 
 ```{r}
 HouseholdSalary %>%

@@ -147,7 +147,7 @@ HouseholdSalary <-
 ```{r}
 HouseholdSalary %>%
   filter(Age != "") %>%
-  mean(Age, na.TRUE)
+  mean(Age)
 ```
 
 Looking at the dataset "HouseholdSalary", it is interesting to see that for most age ranges in different living areas that most people do not go Black Friday shopping. Those that are 18 years old go Black Friday shopping the most and live in the suburbs.

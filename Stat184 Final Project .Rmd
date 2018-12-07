@@ -64,16 +64,7 @@ Celebrate %>%
 ```
 
 
-Grouping by where people live and if they celebrate Thanksgiving helps to show us that most people that celebrate Thanksgiving live in the Suburbs. This number is double Rural and Urban numbers.
-```{r}
-TidyThanksgivingData %>%
-  group_by(LivingArea, CelebrateThanksgiving) %>%
-  filter(LivingArea != "") %>%
-  summarise(total = n())
-```
-
-
-A new data table called "RetailSalary" was created to compare people who work in retail and who don't work and retail to what their household combined salaries were. The graph below shows that more people did not work in retail than did work in retail. The graph also shows that people who did not work in retail had higher household combined salaries. 
+Next, I wanted to investigate the relationship between household combined salary ranges with if the person worked in retail or not. I created a new data table called "RetailSalary" to compare people who work in retail  with those who don't work in retail based on what their household combined salaries were. The graph below shows that more people did not work in retail than did work in retail. The graph also shows that people who did not work in retail had higher household combined salaries. 
 ```{r}
 RetailSalary <-
   TidyThanksgivingData %>%
@@ -243,4 +234,14 @@ KidsTableCutoff %>%
   summarise(Total = n())
   ggplot(aes(x= Age, y = Total)) +
   geom_bar()
+```
+
+
+
+Grouping by where people live and if they celebrate Thanksgiving helps to show us that most people that celebrate Thanksgiving live in the Suburbs. This number is double Rural and Urban numbers.
+```{r}
+TidyThanksgivingData %>%
+  group_by(LivingArea, CelebrateThanksgiving) %>%
+  filter(LivingArea != "") %>%
+  summarise(total = n())
 ```

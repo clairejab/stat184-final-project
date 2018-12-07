@@ -1,5 +1,5 @@
 ---
-title: "Stat184 Final Project "
+title: "Stat184 Final Project-Claire Jablonski "
 output: html_notebook
 ---
 ```{r} 
@@ -11,23 +11,24 @@ library(dbplyr)
 library(dplyr)
 library(tidyverse)
 ```
-My final projects involves investigating a set of Thanksgiving 2015 data. Participants were asked 23 questions about their Thanksgiving celebrations & traditions, Thanksgiving festivities including Black Friday plans, and who they are as people. From exploring and manipulating the data, I was able to learn more about all respondents and draw conconclusions about groups of people.
-
+My final projects involves investigating a set of Thanksgiving 2015 data. Participants were asked 23 questions about their Thanksgiving celebrations & traditions, Thanksgiving festivities including Black Friday plans, and describing their background. From exploring and manipulating the data, I was able to learn more about all respondents and draw conconclusions about groups of people. The purpose of my project was to investigate relationships between categorical data. It is important to note that for some of investigations I truncated the range to only include the lower bound.
 ```{r}
+# Reading Thanksgiving Data with read.csv()
 myURL <- "/Users/clairejablonski/Downloads/data-master/thanksgiving-2015/thanksgiving-2015-poll-data.csv"
-ThanksgivingData <- read.csv(myURL) # Reading Thanksgiving Data with read.csv()
+ThanksgivingData <- read.csv(myURL) 
 ```
 
-I began by renaming variables and removing variables that were not needed. I created a new data table called TidyThanksgiving which presented the data with nicer variable names. 
+I began by renaming variables and removing variables that were not needed. I created a new data table called TidyThanksgiving which presented the data with nicer variable names and cleaner set up. 
 ```{r}
 TidyThanksgivingData <-
   ThanksgivingData %>%
   rename(Respondent = RespondentID, CelebrateThanksgiving = Do.you.celebrate.Thanksgiving., MainDish = What.is.typically.the.main.dish.at.your.Thanksgiving.dinner., MainDishCooked = How.is.the.main.dish.typically.cooked., TypeofStuffing = What.kind.of.stuffing.dressing.do.you.typically.have., TypeofCranberrySauce = What.type.of.cranberry.saucedo.you.typically.have., Gravy = Do.you.typically.have.gravy., PrayatMeal = Do.you.typically.pray.before.or.after.the.Thanksgiving.meal., TravelDistance = How.far.will.you.travel.for.Thanksgiving., WatchMacysParade = Will.you.watch.any.of.the.following.programs.on.Thanksgiving..Please.select.all.that.apply....Macy.s.Parade, KidsTableAgeCutoff = What.s.the.age.cutoff.at.your..kids..table..at.Thanksgiving., Sex = What.is.your.gender., HouseholdCombinedSalary = How.much.total.combined.money.did.all.members.of.your.HOUSEHOLD.earn.last.year., LivingArea = How.would.you.describe.where.you.live. ) %>%
   select(-How.is.the.main.dish.typically.cooked....Other..please.specify., -What.kind.of.stuffing.dressing.do.you.typically.have....Other..please.specify., -What.type.of.cranberry.saucedo.you.typically.have....Other..please.specify., -Which.of.these.side.dishes.aretypically.served.at.your.Thanksgiving.dinner..Please.select.all.that.apply....Other..please.specify..1, -Which.of.these.side.dishes.aretypically.served.at.your.Thanksgiving.dinner..Please.select.all.that.apply....Other..please.specify., -Which.type.of.pie.is.typically.served.at.your.Thanksgiving.dinner..Please.select.all.that.apply....Other..please.specify., -Which.type.of.pie.is.typically.served.at.your.Thanksgiving.dinner..Please.select.all.that.apply....Other..please.specify..1, -Which.of.these.desserts.do.you.typically.have.at.Thanksgiving.dinner..Please.select.all.that.apply......Other..please.specify., -Which.of.these.desserts.do.you.typically.have.at.Thanksgiving.dinner..Please.select.all.that.apply......Other..please.specify..1)
+```
 
-
-
-head(TidyThanksgivingData) # head() was used to show a snapshot of the data table
+```{r}
+# head() was used to show a snapshot of the data table
+head(TidyThanksgivingData) 
 ```
 
 
@@ -54,7 +55,7 @@ It was also interesting to see that females 60+ celebrate Thanksgiving the most 
 Celebrate <-
   TidyThanksgivingData %>%
   filter(CelebrateThanksgiving =="Yes") %>%
-  filter(Sex != "")%>%
+  filter(Sex != "")%>% 
   group_by(Sex,Age) %>%
   summarise(total = n()) # summarise() tells the total number of people that complete each aspect of a category
   
@@ -66,10 +67,11 @@ Celebrate %>%
 
 Next, I wanted to investigate the relationship between household combined salary ranges with if the person worked in retail or not. I created a new data table called "RetailSalary" to compare people who work in retail  with those who don't work in retail based on what their household combined salaries were. The graph below shows that more people did not work in retail than did work in retail. The graph also shows that people who did not work in retail had higher household combined salaries. 
 ```{r}
+# Created new data table called RetailSalary where I grouped by if they worked in retail or not and their household combined salary
 RetailSalary <-
   TidyThanksgivingData %>%
   group_by(Do.you.work.in.retail.,HouseholdCombinedSalary ) %>%
-  filter(Do.you.work.in.retail. != "") %>%
+  filter(Do.you.work.in.retail. != "") %>% # Filter out those who did not respond to the question Do you work in retail
   filter(HouseholdCombinedSalary != "", HouseholdCombinedSalary != "Prefer not to answer") %>%
   summarise(total = n())
 

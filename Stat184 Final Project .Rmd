@@ -14,10 +14,8 @@ library(tidyverse)
 My final projects involves investigating a set of Thanksgiving 2015 data. Participants were asked 23 questions about their Thanksgiving celebrations & traditions, Thanksgiving festivities including Black Friday plans, and who they are as people. From exploring and manipulating the data, I was able to learn more about all respondents and draw conconclusions about groups of people.
 
 ```{r}
-#Reading Thanksgiving Data with read.csv()
-
 myURL <- "/Users/clairejablonski/Downloads/data-master/thanksgiving-2015/thanksgiving-2015-poll-data.csv"
-ThanksgivingData <- read.csv(myURL)
+ThanksgivingData <- read.csv(myURL) # Reading Thanksgiving Data with read.csv()
 ```
 
 I began by renaming variables and removing variables that were not needed. I created a new data table called TidyThanksgiving which presented the data with nicer variable names. 
@@ -27,24 +25,24 @@ TidyThanksgivingData <-
   rename(Respondent = RespondentID, CelebrateThanksgiving = Do.you.celebrate.Thanksgiving., MainDish = What.is.typically.the.main.dish.at.your.Thanksgiving.dinner., MainDishCooked = How.is.the.main.dish.typically.cooked., TypeofStuffing = What.kind.of.stuffing.dressing.do.you.typically.have., TypeofCranberrySauce = What.type.of.cranberry.saucedo.you.typically.have., Gravy = Do.you.typically.have.gravy., PrayatMeal = Do.you.typically.pray.before.or.after.the.Thanksgiving.meal., TravelDistance = How.far.will.you.travel.for.Thanksgiving., WatchMacysParade = Will.you.watch.any.of.the.following.programs.on.Thanksgiving..Please.select.all.that.apply....Macy.s.Parade, KidsTableAgeCutoff = What.s.the.age.cutoff.at.your..kids..table..at.Thanksgiving., Sex = What.is.your.gender., HouseholdCombinedSalary = How.much.total.combined.money.did.all.members.of.your.HOUSEHOLD.earn.last.year., LivingArea = How.would.you.describe.where.you.live. ) %>%
   select(-How.is.the.main.dish.typically.cooked....Other..please.specify., -What.kind.of.stuffing.dressing.do.you.typically.have....Other..please.specify., -What.type.of.cranberry.saucedo.you.typically.have....Other..please.specify., -Which.of.these.side.dishes.aretypically.served.at.your.Thanksgiving.dinner..Please.select.all.that.apply....Other..please.specify..1, -Which.of.these.side.dishes.aretypically.served.at.your.Thanksgiving.dinner..Please.select.all.that.apply....Other..please.specify., -Which.type.of.pie.is.typically.served.at.your.Thanksgiving.dinner..Please.select.all.that.apply....Other..please.specify., -Which.type.of.pie.is.typically.served.at.your.Thanksgiving.dinner..Please.select.all.that.apply....Other..please.specify..1, -Which.of.these.desserts.do.you.typically.have.at.Thanksgiving.dinner..Please.select.all.that.apply......Other..please.specify., -Which.of.these.desserts.do.you.typically.have.at.Thanksgiving.dinner..Please.select.all.that.apply......Other..please.specify..1)
 
-# head() was used to show a snapshot of the data table
-head(TidyThanksgivingData)
+
+
+head(TidyThanksgivingData) # head() was used to show a snapshot of the data table
 ```
 
 
-Filtering out "CelebrateThanksgiving" tells us that out of the 1058 cases (also known as saying out of the 1058 people that completed this survey) 980 of the people celebrated Thanksgiving in 2015.
+After creating a tidy data table, I wanted to know exactly how many of the responents celebrate Thanksgiving. To do this, I filtered out those that do celebrate Thanksgiving and found that 980 out of the 1058 people celebrate Thanksgiving. 
 ```{r}
 TidyThanksgivingData %>%
   filter(CelebrateThanksgiving == "Yes") %>%
   summarise(total = n())
 ```
 
-
-Grouping by sex shows that there were 544 women who completed the survey and 481 males that completed the survey. The 33 number that has no category shows people who may have fogotten to fill out gender or those who did not feel the need to share their gender. These 33 who did not share their gender were removed from the data table.
+Next, I was interested in how many females and males responded to this survey.Grouping by sex shows that there were 544 women who completed the survey and 481 males that completed the survey. 33 people choose not to record their sex and have been removed from the information provided below. 
 ```{r}
 TidyThanksgivingData %>%
   group_by(Sex) %>%
-  filter(Sex != "") %>%
+  filter(Sex != "") %>% # Removes anyone who did not list their sex 
   summarise(total = n())
 
 ```

@@ -47,15 +47,16 @@ TidyThanksgivingData %>%
 
 ```
 
+I then created a data table called "Celebrate" that showed the split betwen sex and age group for those that do celebrate Thanksgiving. What I was interested in learning was if there was a big difference between sexes for each age group.By creating a dot plot it was easy to see the difference between the two sexes. There were more females than males for every age category.It is not suprising that there are more females that celebrate Thanksgiving in each category because more females completed the survey than males. 
 
-A data table called "Celebrate" was created showing the split between females and males and their age group ranges who celebrate Thanksgiving. It is interesting to see that females 60+ celebrate Thanksgiving the most with a total of 144 people celebrating. Males aged 45-59 celebrate Thanksgiving the most with 127 people celebrating. It is not suprising that there are more females that celebrate Thanksgiving in each category. There are way more females that completed the survey than males. The graph is a good visualization for showing the differences between females and males of the four age ranges that celebrate Thanksgiving. The biggest difference between the number of females and males that celebrate Thanksgiving is for 60+ people. The smallest difference between the number of females and males that celebrate Thanksgiving is for the people between 45 to 59 age range.
+It was also interesting to see that females 60+ celebrate Thanksgiving the most with a total of 144 people celebrating. Males aged 45-59 celebrate Thanksgiving the most with 127 people celebrating. The biggest difference between the number of females and males that celebrate Thanksgiving is for 60+ people. The smallest difference between the number of females and males that celebrate Thanksgiving is for the people between 45-59 age range.
 ```{r}
 Celebrate <-
   TidyThanksgivingData %>%
   filter(CelebrateThanksgiving =="Yes") %>%
   filter(Sex != "")%>%
   group_by(Sex,Age) %>%
-  summarise(total = n())
+  summarise(total = n()) # summarise() tells the total number of people that complete each aspect of a category
   
 Celebrate %>%
   ggplot(aes(x= Age, y=total)) +

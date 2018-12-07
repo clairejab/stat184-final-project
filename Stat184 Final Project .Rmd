@@ -66,24 +66,28 @@ Celebrate %>%
 
 
 Next, I wanted to investigate the relationship between household combined salary ranges with if the person worked in retail or not. I created a new data table called "RetailSalary" to compare people who work in retail  with those who don't work in retail based on what their household combined salaries were. The graph below shows that more people did not work in retail than did work in retail. The graph also shows that people who did not work in retail had higher household combined salaries. 
+
+It was interesting to see that the biggest difference in amount of people that worked in retail and did not work in retail was for the household combined total salary of $25,000 to $49,000. For both working in retail and not working in retail the most amount of people fall in the $25,000 to $49,000 range for household combined salary.It is also intersting to point out that as the household combined salary ranges increase the difference in the total amount of people that work in retail and do not work in retail decreases. This means that the range between the two groups gets smaller as the household combined salary increases.
 ```{r}
 # Created new data table called RetailSalary where I grouped by if they worked in retail or not and their household combined salary
 RetailSalary <-
   TidyThanksgivingData %>%
   group_by(Do.you.work.in.retail.,HouseholdCombinedSalary ) %>%
-  filter(Do.you.work.in.retail. != "") %>% # Filter out those who did not respond to the question Do you work in retail
-  filter(HouseholdCombinedSalary != "", HouseholdCombinedSalary != "Prefer not to answer") %>%
-  summarise(total = n())
+  filter(Do.you.work.in.retail. != "") %>%                                                       # Filter out those who did not respond to the question Do you work in retail
+  filter(HouseholdCombinedSalary != "", HouseholdCombinedSalary != "Prefer not to answer") %>%   # Filter out those that did not share their combined household salary or perfered not to answer
+  summarise(total = n()) %>%
+  arrange(desc(total))
 
 
 RetailSalary %>%
   ggplot(aes(x = HouseholdCombinedSalary, y = total)) +
   geom_point(aes( color = Do.you.work.in.retail.)) +
   theme(axis.text.x = element_text(angle = 30, hjust =1))
+# Used theme() to have the x variable written at a slant so it can be visible on the graph
 ```
 
 
-From looking at the original TidyThanksgivingData, I was interested in comparing different regions people live in and their main dish for Thanksgiving and how it is cooked. I expected that turkey would be the main dish for all regions and that baking the turkey would be the most popular option.I created a data table "USRegionMainDish" that explored these variables.From the table we can see that the most amount of people live in the South Atlantic and bake turkey.From looking at the chart it is difficult to see if baking or roasted is most popular cooking method and if turkey is the most popular food choice. To try and clear this up a plot was created that created a facet for each US Region exploring the differences in the food cooked and the cooking methods used
+From looking at the original TidyThanksgivingData, I was interested in comparing different regions people live in and their main dish for Thanksgiving and how it is cooked. I expected that turkey would be the main dish for all regions and that baking the turkey would be the most popular option.I created a data table "USRegionMainDish" that explored these variables.From the table we can see that the most amount of people live in the South Atlantic and bake turkey.From looking at the chart it is difficult to see if baking or roasted is most popular cooking method and if turkey is the most popular food choice. To try and clear this up a plot was created that created a facet for each US Region exploring the differences in the food cooked and the cooking methods used.
 ```{r}
 USRegionMainDish <-
   TidyThanksgivingData %>%
@@ -97,7 +101,7 @@ USRegionMainDish <-
   summarise(total = n())
 
 USRegionMainDish %>%
-  arrange( desc(total))
+  arrange( desc(total)) # Arranging the data in descending order according to total amount
 ```
 From this graph it is now obvious that in each region that turkey is more served than anyother dish. What we cannot really tell from this graph is the way that most people cook their main dish it really varies from region to region and there is no distinct pattern seen from it. Other factors may have an influenece like age, sex, or income. Let us explore what age has to do with the style in how people cook their turkey.
 ```{r}
@@ -116,8 +120,6 @@ USRegionMainDish %>%
   geom_point(aes(color = US.Region))
   
 ```
-
-
 This shows that Baked and Roasted are the most popular cooking type for the main dish. It is important to notice that the older range of people are the most popular in these types more than younger people because from what we saw before in the data it makes sense because there are more older people that complete this survey that celebrate thanksgiving compred to younger generations of people.
 ```{r}
 MainDishCookedAge <-
@@ -128,6 +130,9 @@ MainDishCookedAge <-
   arrange( desc(total) )
 head(MainDishCookedAge)
 ```
+
+
+
 
 ```{r}
 Joined <-
@@ -192,34 +197,43 @@ PrayBeforeMeal %>%
 I then created a matrix where I correctly labeld Gender and if they prayed or not. With creating a matrix I was able to see the proportion for each category and how much that proportion made up the entire total. This format allowed me to do a Chi Square Test where I discovered the Chi Square value is 0.20362 and the p-value is 0.6518. Because the p-value is greater than 0.05 we reject the null hypothesis which means there is no relationship between gender and praying before Thanksgiving dinner. This makes sense from looking at the graph above as the difference between males and females is not big. 
 ```{r}
 PrayBeforeMeal <- matrix(c(174,152,341,280) ,nrow=2,byrow=TRUE)
+# Created a matrix with the total values for each category
 PrayBeforeMeal
 ```
 
 ```{r}
+# Put names on the matrix so it would be easier to read
 dimnames(PrayBeforeMeal) <- list(c("No","Yes"),c("Female","Male"))
 names(dimnames(PrayBeforeMeal)) <- c("Pray","Gender")
 PrayBeforeMeal
 ```
 
 ```{r}
+# Found the total amount of males and females that responded to this question
 tot <- sum(PrayBeforeMeal)
 tot
-
+# Found the proportion for each category 
 PrayBeforeMeal/tot
 ```
 
 ```{r}
+# Did a Chi Square test to see if gender and praying before a meal are correlated
 prop.test(PrayBeforeMeal, correct = F)
 ```
 
 
 
-Lastly, I was interested in seeing how the age of the respondent, the area they lived in, and their families kid table age cut off differ. I know in my household it is always the grandchildren who are forced to the kids table ( no matter how old we are )! To do this I decided to create a jitter plot. A jitter plot adds a small amount of randcom variation to the location of each point, and is useful plot for handling overplotting. From the jitter plot, I was able to see that for all age ranges in a suburban living area is it most popular to have the kids table cut off be at 10 years old. People aged 60 from the Suburban area have the highest total amount of people that have their kids cut off at 10 years old. It is interesting to see the variety between all 
+Lastly, I was interested in seeing how the age of the respondent, the area they lived in, and their families kid table age cut off differ. I know in my household it is always the grandchildren who are forced to the kids table ( no matter how old we are )! To do this I decided to create a jitter plot. A jitter plot adds a small amount of randcom variation to the location of each point, and is useful plot for handling overplotting. From the jitter plot, I was able to see that for all age ranges in a suburban living area is it most popular to have the kids table cut off be at 10 years old. People aged 60 from the Suburban area have the highest total amount of people that have their kids cut off at 10 years old. It is interesting to see the variety between all different living areas. It is very interesting to see that the kids table cutoff age was mostly either 10 or 21, values in between occured but were not as popular for all three living areas.
+
+It is important to note that the data was truncated to only include the first value for the age range so a jitter plot could be created!
 ```{r}
 KidsTableCutoff <-
   TidyThanksgivingData %>%
   mutate( KidsTableAgeCutoff=gsub("or|younger|older","", KidsTableAgeCutoff)) %>%
+  # Removed the words or, younger, and older from the KidsTableAgeCutoff variable
   mutate( Age=gsub("[-, 29, 44, +]","", Age))
+  # Removed the range values to truncate the data to only have the first value of the range
+
 ```
 
 ```{r}
@@ -232,51 +246,4 @@ KidsTableCutoff %>%
   facet_wrap( ~LivingArea)
   
 
-```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-```{r}
-KidsTableCutoff %>%
-  group_by(Age) %>%
-  filter(Age != "") %>%
-  summarise(total = n()) %>%
-  ggplot(aes(x= Age, y = Total)) +
-  geom_bar()
-```
-
-
-
-Grouping by where people live and if they celebrate Thanksgiving helps to show us that most people that celebrate Thanksgiving live in the Suburbs. This number is double Rural and Urban numbers.
-```{r}
-TidyThanksgivingData %>%
-  group_by(LivingArea, CelebrateThanksgiving) %>%
-  filter(LivingArea != "") %>%
-  summarise(total = n())
-```
-
-```{r}
-MainDishServed <-
-  TidyThanksgivingData %>%
-  BP_narrow %>%
-  mutate(change= MainDish - What.is.typically.the.main.dish.at.your.Thanksgiving.dinner....Other..please.specify.)
-  
 ```

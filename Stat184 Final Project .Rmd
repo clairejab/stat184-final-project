@@ -80,7 +80,7 @@ RetailSalary %>%
 ```
 
 
-From this data table called "USRegionMainDish" we are looking at what different regions people live in, what is the main dish they eat for Thanksgiving and how is this main dish cooked. From the table we can see that the most amount of people live in the South Atlantic and bake turkey.
+From looking at the original TidyThanksgivingData, I was interested in comparing different regions people live in and their main dish for Thanksgiving and how it is cooked. I expected that turkey would be the main dish for all regions and that baking the turkey would be the most popular option.I created a data table "USRegionMainDish" that explored these variables.From the table we can see that the most amount of people live in the South Atlantic and bake turkey.From looking at the chart it is difficult to see if baking or roasted is most popular cooking method and if turkey is the most popular food choice. To try and clear this up a plot was created that created a facet for each US Region exploring the differences in the food cooked and the cooking methods used
 ```{r}
 USRegionMainDish <-
   TidyThanksgivingData %>%
@@ -95,14 +95,16 @@ USRegionMainDish <-
 
 USRegionMainDish %>%
   arrange( desc(total))
-
+```
+From this graph it is now obvious that in each region that turkey is more served than anyother dish. What we cannot really tell from this graph is the way that most people cook their main dish it really varies from region to region and there is no distinct pattern seen from it. Other factors may have an influenece like age, sex, or income. Let us explore what age has to do with the style in how people cook their turkey.
+```{r}
 USRegionMainDish %>%
   ggplot(aes(x = MainDish , y = total )) +
   geom_point( aes(shape = MainDishCooked)) +
   facet_wrap( ~ US.Region)
 
 ```
-From this graph it is now obvious that in each region that turkey is more served than anyother dish. What we cannot really tell from this graph is the way that most people cook their main dish it really varies from region to region and there is no distinct pattern seen from it. Other factors may have an influenece like age, sex, or income. Let us explore what age has to do with the style in how people cook their turkey. 
+From this graph we get a better visaulization with color seeing the split in the amount of people in each region that either baked, fried, or roasted their turkey. We can see that all 9 US Regions bake their turkey while only 6 US Regions fry their turkey and 8 regions roast their turkey. It is obvious to tell from this graph that frying turkey is the least popular choice among all regions. West North Centeral is the only US Region that does not roast their turkey. It is very close for all other US regions between the amount of people that bake their turkey or roast it. It is interesting to note that there is larger spread between the regions in who bakes their turky compared to the more compact spread of those that roast their turkey. 
 ```{r}
 USRegionMainDish %>%
   filter(MainDish == "Turkey" ) %>%
@@ -110,11 +112,9 @@ USRegionMainDish %>%
   geom_point(aes(color = US.Region))
   
 ```
-From this graph we get a better visaulization with color seeing the split in the amount of people in each region that either baked, fried, or roasted their turkey. We can see that all 9 US Regions bake their turkey while only 6 US Regions fry their turkey and 8 regions roast their turkey. It is obvious to tell from this graph that frying turkey is the least popular choice among all regions. West North Centeral is the only US Region that does not roast their turkey. It is very close for all other US regions between the amount of people that bake their turkey or roast it. It is interesting to note that there is larger spread between the regions in who bakes their turky compared to the more compact spread of those that roast their turkey. 
 
 
-
-
+This shows that Baked and Roasted are the most popular cooking type for the main dish. It is important to notice that the older range of people are the most popular in these types more than younger people because from what we saw before in the data it makes sense because there are more older people that complete this survey that celebrate thanksgiving compred to younger generations of people.
 ```{r}
 TidyThanksgivingData %>%
   group_by(Age, MainDishCooked) %>%
@@ -122,7 +122,7 @@ TidyThanksgivingData %>%
   filter(MainDishCooked !="", MainDishCooked != "Other (please specify)", MainDishCooked != "I don't know", Age != "") %>%
   arrange( desc(total) )
 ```
-This shows that Baked and Roasted are the most popular cooking type for the main dish. It is important to notice that the older range of people are the most popular in these types more than younger people because from what we saw before in the data it makes sense because there are more older people that complete this survey that celebrate thanksgiving compred to younger generations of people.
+
 
 
 ```{r}
@@ -137,13 +137,6 @@ HouseholdSalary <-
 
 ```
 
-
-
-```{r}
-HouseholdSalary %>%
-  filter(Age != "") %>%
-  mean(Age)
-```
 
 Looking at the dataset "HouseholdSalary", it is interesting to see that for most age ranges in different living areas that most people do not go Black Friday shopping. Those that are 18 years old go Black Friday shopping the most and live in the suburbs.
 ```{r}

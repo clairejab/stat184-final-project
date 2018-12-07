@@ -131,7 +131,7 @@ head(MainDishCookedAge)
 Joined <-
   MainDishCookedAge %>%
   full_join(USRegionMainDish, "MainDishCooked")
-head(Joined)
+View(Joined)
 ```
 
 ```{r}

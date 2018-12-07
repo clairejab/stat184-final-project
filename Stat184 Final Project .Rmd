@@ -148,15 +148,9 @@ arrange( desc(total) )
 
 ```
 
-```{r}
-MainDishServed <-
-  TidyThanksgivingData %>%
-  BP_narrow %>%
-  mutate(change= MainDish - What.is.typically.the.main.dish.at.your.Thanksgiving.dinner....Other..please.specify.)
-  
-```
 
 
+Working with all categorical variables can be tough when trying to analyze the data. But looking at my data, I was interested in seeing if there was a correlation between praying before Thanksgiving dinner and sex. First, I created a new data table called "PrayBeforeMeal". This data table summarized the total amount of males and females who do and do not pray before Thanksgiving dinner. It was interesting to see that there were very similar totals for males and females in who prayed and who did not pray before Thanksgiving.
 ```{r}
 PrayBeforeMeal <-
 TidyThanksgivingData %>%
@@ -175,6 +169,8 @@ PrayBeforeMeal %>%
   geom_point(aes(shape = Sex))
 ```
 
+
+I then created a matrix where I correctly labeld Gender and if they prayed or not. With creating a matrix I was able to see the proportion for each category and how much that proportion made up the entire total. This format allowed me to do a Chi Square Test where I discovered the Chi Square value is 0.20362 and the p-value is 0.6518. Because the p-value is greater than 0.05 we reject the null hypothesis which means there is no relationship between gender and praying before Thanksgiving dinner. This makes sense from looking at the graph above as the difference between males and females is not big. 
 ```{r}
 PrayBeforeMeal <- matrix(c(174,152,341,280) ,nrow=2,byrow=TRUE)
 PrayBeforeMeal
@@ -224,7 +220,7 @@ KidsTableCutoff %>%
 KidsTableCutoff %>%
   group_by(Age) %>%
   filter(Age != "") %>%
-  summarise(Total = n())
+  summarise(total = n()) %>%
   ggplot(aes(x= Age, y = Total)) +
   geom_bar()
 ```
@@ -237,4 +233,12 @@ TidyThanksgivingData %>%
   group_by(LivingArea, CelebrateThanksgiving) %>%
   filter(LivingArea != "") %>%
   summarise(total = n())
+```
+
+```{r}
+MainDishServed <-
+  TidyThanksgivingData %>%
+  BP_narrow %>%
+  mutate(change= MainDish - What.is.typically.the.main.dish.at.your.Thanksgiving.dinner....Other..please.specify.)
+  
 ```

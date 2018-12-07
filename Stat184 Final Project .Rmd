@@ -11,6 +11,7 @@ library(dbplyr)
 library(dplyr)
 library(tidyverse)
 ```
+My final projects involves investigating a set of Thanksgiving 2015 data. Participants were asked 23 questions about their Thanksgiving celebrations & traditions, Thanksgiving festivities including Black Friday plans, and who they are as people. From exploring and manipulating the data, I was able to learn more about all respondents and draw conconclusions about groups of people.
 
 ```{r}
 myURL <- "/Users/clairejablonski/Downloads/data-master/thanksgiving-2015/thanksgiving-2015-poll-data.csv"

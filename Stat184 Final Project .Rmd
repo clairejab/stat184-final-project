@@ -131,26 +131,27 @@ MainDishCookedAge <-
 head(MainDishCookedAge)
 ```
 
-
-
-
 ```{r}
+# Joined the MainDishCookedAge and USRegionMainDish data tables
 Joined <-
   MainDishCookedAge %>%
   full_join(USRegionMainDish, "MainDishCooked")
 View(Joined)
 ```
 
+From looking at the data, I was really interested in seeing the average age and salary people earned in the TidyThanksgivingData. To do this I created a new HouseholdSalary data table where I truncated the age and and household combined salary. To truncate the household combined salary, I created a new variable called salary that only contained the first value of the range of values. It was interesting exploring these variables and seeing that the average truncated salary was $74,077.62. The average truncated age that responded to this survey was 42 years old. It is important to see that the average truncated age was 42 showing that mostly older people responded to this survey.
 ```{r}
 HouseholdSalary <-
   TidyThanksgivingData %>%
   mutate( HouseholdCombinedSalary=gsub("[$,%]|to|and up","",HouseholdCombinedSalary)) %>%
+  # Removed $ and the words that indicated range for HouseholdCombinedSalary
   mutate( Age=gsub("[-, 29, 44, +]","", Age)) %>%
+  # Removed the range values for Age variable 
   mutate(Age = as.numeric(Age)) %>%
+  # Made sure Age was a numeric variable
   mutate(Salary=if_else(condition = (HouseholdCombinedSalary == "Prefer not answer"), true = as.character(NA), false = str_extract(string = HouseholdCombinedSalary, pattern = "^[[:digit:]]+" ))) %>%
+  # Create a new variable Salary that only contains the first value of the range of values for the HouseholdCombinedSalary
   mutate(Salary = as.numeric(Salary))
-
-
 ```
 
 ```{r}
@@ -194,7 +195,7 @@ PrayBeforeMeal %>%
 ```
 
 
-I then created a matrix where I correctly labeld Gender and if they prayed or not. With creating a matrix I was able to see the proportion for each category and how much that proportion made up the entire total. This format allowed me to do a Chi Square Test where I discovered the Chi Square value is 0.20362 and the p-value is 0.6518. Because the p-value is greater than 0.05 we reject the null hypothesis which means there is no relationship between gender and praying before Thanksgiving dinner. This makes sense from looking at the graph above as the difference between males and females is not big. 
+I then created a matrix where I correctly labeld gender and if they prayed or not. With creating a matrix I was able to see the proportion for each category and how much that proportion made up the entire total. This format allowed me to do a Chi Square Test where I discovered the Chi Square value is 0.20362 and the p-value is 0.6518. Because the p-value is greater than 0.05 we reject the null hypothesis which means there is no relationship between gender and praying before Thanksgiving dinner. This makes sense from looking at the graph above as the difference between males and females is not big. 
 ```{r}
 PrayBeforeMeal <- matrix(c(174,152,341,280) ,nrow=2,byrow=TRUE)
 # Created a matrix with the total values for each category
@@ -223,7 +224,7 @@ prop.test(PrayBeforeMeal, correct = F)
 
 
 
-Lastly, I was interested in seeing how the age of the respondent, the area they lived in, and their families kid table age cut off differ. I know in my household it is always the grandchildren who are forced to the kids table ( no matter how old we are )! To do this I decided to create a jitter plot. A jitter plot adds a small amount of randcom variation to the location of each point, and is useful plot for handling overplotting. From the jitter plot, I was able to see that for all age ranges in a suburban living area is it most popular to have the kids table cut off be at 10 years old. People aged 60 from the Suburban area have the highest total amount of people that have their kids cut off at 10 years old. It is interesting to see the variety between all different living areas. It is very interesting to see that the kids table cutoff age was mostly either 10 or 21, values in between occured but were not as popular for all three living areas.
+Lastly, I was interested in seeing how the age of the respondent, the area they lived in, and their families kid table age cut off differ. I know in my household it is always the grandchildren who are forced to the kids table ( no matter how old we are )! To do this I decided to create a jitter plot. A jitter plot adds a small amount of randcom variation to the location of each point, and is useful plot for handling overplotting. From the jitter plot, I was able to see that for all age ranges in a suburban living area is it most popular to have the kids table cut off be at 10 years old. People aged 60 from the suburban area have the highest total amount of people that have their kids cut off at 10 years old. It is interesting to see the variety between all different living areas. It is very interesting to see that the kids table cutoff age was mostly either 10 or 21, values in between occured but were not as popular for all three living areas.
 
 It is important to note that the data was truncated to only include the first value for the age range so a jitter plot could be created!
 ```{r}

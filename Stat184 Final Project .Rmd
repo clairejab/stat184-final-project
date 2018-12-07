@@ -118,14 +118,21 @@ USRegionMainDish %>%
 
 This shows that Baked and Roasted are the most popular cooking type for the main dish. It is important to notice that the older range of people are the most popular in these types more than younger people because from what we saw before in the data it makes sense because there are more older people that complete this survey that celebrate thanksgiving compred to younger generations of people.
 ```{r}
-TidyThanksgivingData %>%
+MainDishCookedAge <-
+  TidyThanksgivingData %>%
   group_by(Age, MainDishCooked) %>%
   summarise(total = n()) %>%
   filter(MainDishCooked !="", MainDishCooked != "Other (please specify)", MainDishCooked != "I don't know", Age != "") %>%
   arrange( desc(total) )
+head(MainDishCookedAge)
 ```
 
-
+```{r}
+Joined <-
+  MainDishCookedAge %>%
+  full_join(USRegionMainDish, "MainDishCooked")
+head(Joined)
+```
 
 ```{r}
 HouseholdSalary <-
@@ -140,7 +147,12 @@ HouseholdSalary <-
 ```
 
 ```{r}
-
+HouseholdSalary %>%
+summarise(mean(Salary, na.rm = TRUE))
+```
+```{r}
+HouseholdSalary %>%
+  summarise(mean(Age, na.rm = TRUE))
 ```
 
 Looking at the dataset "HouseholdSalary", it is interesting to see that for most age ranges in different living areas that most people do not go Black Friday shopping. Those that are 18 years old go Black Friday shopping the most and live in the suburbs.
@@ -200,7 +212,7 @@ prop.test(PrayBeforeMeal, correct = F)
 
 
 
-Lastly, I was interested in seeing how the age of the respondent, the area they lived in, and their families kid table age cut off differ. I know in my household it is always the grandchildren who are forced to the kids table ( no matter how old we are )! To do this I decided to create a jitter plot. A jitter plot adds a small amount of randcom variation to the location of each point, and is useful plot for handling overplotting. From the jitter plot, I was able to see that for all age ranges in a suburban living area is it most popular to have the kids table cut off be at 10 years old. 
+Lastly, I was interested in seeing how the age of the respondent, the area they lived in, and their families kid table age cut off differ. I know in my household it is always the grandchildren who are forced to the kids table ( no matter how old we are )! To do this I decided to create a jitter plot. A jitter plot adds a small amount of randcom variation to the location of each point, and is useful plot for handling overplotting. From the jitter plot, I was able to see that for all age ranges in a suburban living area is it most popular to have the kids table cut off be at 10 years old. People aged 60 from the Suburban area have the highest total amount of people that have their kids cut off at 10 years old. It is interesting to see the variety between all 
 ```{r}
 KidsTableCutoff <-
   TidyThanksgivingData %>%

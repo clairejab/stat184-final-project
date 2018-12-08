@@ -2,7 +2,7 @@
 title: "Stat184 Final Project-Claire Jablonski "
 output: html_notebook
 ---
-```{r} 
+```{r include=FALSE} 
 library(DataComputing)
 library(tidyr)
 library(mosaicData)
@@ -10,6 +10,7 @@ library(rvest)
 library(dbplyr)
 library(dplyr)
 library(tidyverse)
+
 ```
 My final projects involves investigating a set of Thanksgiving 2015 data. Participants were asked 23 questions about their Thanksgiving celebrations & traditions, Thanksgiving festivities including Black Friday plans, and describing their background. From exploring and manipulating the data, I was able to learn more about all respondents and draw conconclusions about groups of people. The purpose of my project was to investigate relationships between categorical data. It is important to note that for some of investigations I truncated the range to only include the lower bound.
 ```{r}

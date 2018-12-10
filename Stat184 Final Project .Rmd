@@ -13,7 +13,7 @@ library(tidyverse)
 library(party)
 
 ```
-My final projects involves investigating a set of Thanksgiving 2015 data. Participants were asked 23 questions about their Thanksgiving celebrations & traditions, Thanksgiving festivities including Black Friday plans, and describing their background. From exploring and manipulating the data, I was able to learn more about all respondents and draw conconclusions about groups of people. The purpose of my project was to investigate relationships between categorical data. It is important to note that for some of investigations I truncated the range to only include the lower bound.
+My final projects involves investigating a set of Thanksgiving 2015 data. Participants were asked 23 questions about their Thanksgiving celebrations & traditions, Thanksgiving festivities including Black Friday plans, and describing their background. From exploring and manipulating the data, I was able to learn more about all respondents and draw conconclusions about groups of people. The purpose of my project was to investigate relationships between categorical data. It is important to note that for some of investigations I truncated the range to only include the lower bound and not the upper bound.
 ```{r}
 # Reading Thanksgiving Data with read.csv()
 myURL <- "/Users/clairejablonski/Downloads/data-master/thanksgiving-2015/thanksgiving-2015-poll-data.csv"
@@ -28,12 +28,13 @@ TidyThanksgivingData <-
   select(-How.is.the.main.dish.typically.cooked....Other..please.specify., -What.kind.of.stuffing.dressing.do.you.typically.have....Other..please.specify., -What.type.of.cranberry.saucedo.you.typically.have....Other..please.specify., -Which.of.these.side.dishes.aretypically.served.at.your.Thanksgiving.dinner..Please.select.all.that.apply....Other..please.specify..1, -Which.of.these.side.dishes.aretypically.served.at.your.Thanksgiving.dinner..Please.select.all.that.apply....Other..please.specify., -Which.type.of.pie.is.typically.served.at.your.Thanksgiving.dinner..Please.select.all.that.apply....Other..please.specify., -Which.type.of.pie.is.typically.served.at.your.Thanksgiving.dinner..Please.select.all.that.apply....Other..please.specify..1, -Which.of.these.desserts.do.you.typically.have.at.Thanksgiving.dinner..Please.select.all.that.apply......Other..please.specify., -Which.of.these.desserts.do.you.typically.have.at.Thanksgiving.dinner..Please.select.all.that.apply......Other..please.specify..1)
 ```
 
+
 ```{r}
 # head() was used to show a snapshot of the data table
 head(TidyThanksgivingData) 
 ```
 
-
+# Who celebrates Thanksgiving the most?
 After creating a tidy data table, I wanted to know exactly how many of the responents celebrate Thanksgiving. To do this, I filtered out those that do celebrate Thanksgiving and found that 980 out of the 1058 people celebrate Thanksgiving. 
 ```{r}
 TidyThanksgivingData %>%
@@ -66,7 +67,7 @@ Celebrate %>%
   geom_point(aes(color = Sex))
 ```
 
-
+# What is the relationship between Household Combined Salaries and whether you work in Retail?
 Next, I wanted to investigate the relationship between household combined salary ranges with if the person worked in retail or not. I created a new data table called "RetailSalary" to compare people who work in retail  with those who don't work in retail based on what their household combined salaries were. The graph below shows that more people did not work in retail than did work in retail. The graph also shows that people who did not work in retail had higher household combined salaries. 
 
 It was interesting to see that the biggest difference in amount of people that worked in retail and did not work in retail was for the household combined total salary of $25,000 to $49,000. For both working in retail and not working in retail the most amount of people fall in the $25,000 to $49,000 range for household combined salary.It is also intersting to point out that as the household combined salary ranges increase the difference in the total amount of people that work in retail and do not work in retail decreases. This means that the range between the two groups gets smaller as the household combined salary increases.
@@ -88,7 +89,7 @@ RetailSalary %>%
 # Used theme() to have the x variable written at a slant so it can be visible on the graph
 ```
 
-
+# What is the most popular Main Dish cooked in all US Regions? How is it cooked?
 From looking at the original TidyThanksgivingData, I was interested in comparing different regions people live in and their main dish for Thanksgiving and how it is cooked. I expected that turkey would be the main dish for all regions and that baking the turkey would be the most popular option.I created a data table "USRegionMainDish" that explored these variables.From the table we can see that the most amount of people live in the South Atlantic and bake turkey.From looking at the chart it is difficult to see if baking or roasted is most popular cooking method and if turkey is the most popular food choice. To try and clear this up a plot was created that created a facet for each US Region exploring the differences in the food cooked and the cooking methods used.
 ```{r}
 USRegionMainDish <-
@@ -133,14 +134,8 @@ MainDishCookedAge <-
 head(MainDishCookedAge)
 ```
 
-```{r}
-# Joined the MainDishCookedAge and USRegionMainDish data tables
-Joined <-
-  MainDishCookedAge %>%
-  full_join(USRegionMainDish, "MainDishCooked")
-View(Joined)
-```
 
+# What is the mean Age and Salary of Surveyors?
 From looking at the data, I was really interested in seeing the average age and salary people earned in the TidyThanksgivingData. To do this I created a new HouseholdSalary data table where I truncated the age and and household combined salary. To truncate the household combined salary, I created a new variable called salary that only contained the first value of the range of values. It was interesting exploring these variables and seeing that the average truncated salary was $74,077.62. The average truncated age that responded to this survey was 42 years old. It is important to see that the average truncated age was 42 showing that mostly older people responded to this survey.
 ```{r}
 HouseholdSalary <-
@@ -177,7 +172,7 @@ plot(MyModel, type = "simple")
 ```
 
 
-
+# Are Sex and Praying Before a Meal correlated?
 Working with all categorical variables can be tough when trying to analyze the data. But looking at my data, I was interested in seeing if there was a correlation between praying before Thanksgiving dinner and sex. First, I created a new data table called "PrayBeforeMeal". This data table summarized the total amount of males and females who do and do not pray before Thanksgiving dinner. It was interesting to see that there were very similar totals for males and females in who prayed and who did not pray before Thanksgiving.
 ```{r}
 PrayBeforeMeal <-
@@ -228,7 +223,7 @@ prop.test(PrayBeforeMeals, correct = F)
 ```
 
 
-
+# Does Age and Living Area have an impact on Kids Table Cuttoff?
 Lastly, I was interested in seeing how the age of the respondent, the area they lived in, and their families kid table age cut off differ. I know in my household it is always the grandchildren who are forced to the kids table ( no matter how old we are )! To do this I decided to create a jitter plot. A jitter plot adds a small amount of randcom variation to the location of each point, and is useful plot for handling overplotting. From the jitter plot, I was able to see that for all age ranges in a suburban living area is it most popular to have the kids table cut off be at 10 years old. People aged 60 from the suburban area have the highest total amount of people that have their kids cut off at 10 years old. It is interesting to see the variety between all different living areas. It is very interesting to see that the kids table cutoff age was mostly either 10 or 21, values in between occured but were not as popular for all three living areas.
 
 It is important to note that the data was truncated to only include the first value for the age range so a jitter plot could be created!
@@ -250,6 +245,7 @@ KidsTableCutoff %>%
   ggplot(aes(x= Age, y = KidsTableAgeCutoff)) +
   geom_jitter(width = 0.3, height = 0.3) +
   facet_wrap( ~LivingArea)
-  
-
 ```
+
+# Conclusion
+The purpose of this project was to explore Thanksgiving 2015 data and notice relationships between categorical variables. In each part of this project I made connections between different variables. It was hard at times to make different connections with just categorical variables so in some instances I truncated the data to only include the lower bound of a categorical variable making it a quantitative variable. Overall I enjoyed this project and learned a lot about Thanksgiving celebrations and the people that celebrate it!

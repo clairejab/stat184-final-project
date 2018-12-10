@@ -10,6 +10,7 @@ library(rvest)
 library(dbplyr)
 library(dplyr)
 library(tidyverse)
+library(party)
 
 ```
 My final projects involves investigating a set of Thanksgiving 2015 data. Participants were asked 23 questions about their Thanksgiving celebrations & traditions, Thanksgiving festivities including Black Friday plans, and describing their background. From exploring and manipulating the data, I was able to learn more about all respondents and draw conconclusions about groups of people. The purpose of my project was to investigate relationships between categorical data. It is important to note that for some of investigations I truncated the range to only include the lower bound.
@@ -163,15 +164,16 @@ summarise(mean(Salary, na.rm = TRUE))
 HouseholdSalary %>%
   summarise(mean(Age, na.rm = TRUE))
 ```
-
-Looking at the dataset "HouseholdSalary", it is interesting to see that for most age ranges in different living areas that most people do not go Black Friday shopping. Those that are 18 years old go Black Friday shopping the most and live in the suburbs.
+With this truncated data, I was also interested in creating a tree graph to display Age and Salary. I think it is interesting and it makes sense that as you get older your salary will increase. One thing to take note of is that no one took the survey that was under 18 years old so it does not make sense that when you are under 18 your early salary will be $42,660.82. I also think it is interesting to see that people between the ages of 18 and 30 earn a yearly salary of $64,466.67 which is around $10,000 less than the mean salary for all people surveyed. Tree graphs make it easy to make connections between data!
 ```{r}
-HouseholdSalary %>%
-  group_by(Age, Will.you.shop.any.Black.Friday.sales.on.Thanksgiving.Day., LivingArea) %>%
-  filter(Age != "", Will.you.shop.any.Black.Friday.sales.on.Thanksgiving.Day. != "", LivingArea != "") %>%
-  summarise(total = n()) %>%
-arrange( desc(total) )
-
+TidyHouseholdSalary <-
+  HouseholdSalary %>%
+  filter(Age !="NA") %>%
+  filter(Salary !="NA") %>%
+  filter(Sex != "")
+MyModel <-
+  party::ctree(Salary ~ Age + Sex, data = TidyHouseholdSalary)
+plot(MyModel, type = "simple")
 ```
 
 
@@ -180,9 +182,11 @@ Working with all categorical variables can be tough when trying to analyze the d
 ```{r}
 PrayBeforeMeal <-
 TidyThanksgivingData %>%
-  group_by(PrayatMeal, Sex) %>%
+  group_by(PrayatMeal, Sex ) %>%
   filter(PrayatMeal != "") %>%
   filter(Sex != "") %>%
+  mutate( Age=gsub("[-, 29, 44, +]","", Age)) %>%
+  mutate(Age = as.numeric(Age)) %>%
   summarise(total = n())
 
 PrayBeforeMeal %>%
@@ -198,29 +202,29 @@ PrayBeforeMeal %>%
 
 I then created a matrix where I correctly labeld gender and if they prayed or not. With creating a matrix I was able to see the proportion for each category and how much that proportion made up the entire total. This format allowed me to do a Chi Square Test where I discovered the Chi Square value is 0.20362 and the p-value is 0.6518. Because the p-value is greater than 0.05 we reject the null hypothesis which means there is no relationship between gender and praying before Thanksgiving dinner. This makes sense from looking at the graph above as the difference between males and females is not big. 
 ```{r}
-PrayBeforeMeal <- matrix(c(174,152,341,280) ,nrow=2,byrow=TRUE)
+PrayBeforeMeals <- matrix(c(174,152,341,280) ,nrow=2,byrow=TRUE)
 # Created a matrix with the total values for each category
-PrayBeforeMeal
+PrayBeforeMeals
 ```
 
 ```{r}
 # Put names on the matrix so it would be easier to read
-dimnames(PrayBeforeMeal) <- list(c("No","Yes"),c("Female","Male"))
-names(dimnames(PrayBeforeMeal)) <- c("Pray","Gender")
+dimnames(PrayBeforeMeals) <- list(c("No","Yes"),c("Female","Male"))
+names(dimnames(PrayBeforeMeals)) <- c("Pray","Gender")
 PrayBeforeMeal
 ```
 
 ```{r}
 # Found the total amount of males and females that responded to this question
-tot <- sum(PrayBeforeMeal)
+tot <- sum(PrayBeforeMeals)
 tot
 # Found the proportion for each category 
-PrayBeforeMeal/tot
+PrayBeforeMeals/tot
 ```
 
 ```{r}
 # Did a Chi Square test to see if gender and praying before a meal are correlated
-prop.test(PrayBeforeMeal, correct = F)
+prop.test(PrayBeforeMeals, correct = F)
 ```
 
 
